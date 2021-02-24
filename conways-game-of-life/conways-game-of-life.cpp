@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <iostream>
 
 #define ALIVE 1
@@ -11,28 +10,28 @@
 
 class Universe {
 private:
-	int row;
-	int col;
+	int rows;
+	int cols;
 	int cells[32][32];
 	bool is_ok(int n) {
 		return n % 2 == 0 || n % 7 == 0;
 	}
 
-	int neighbour_count(int y, int x) {
+	int neighbour_count(int row, int col) {
 		int count = 0;
 
-		int north = y == 0 ? row - 1 : y - 1;
-		int south = y == row - 1 ? 0 : y + 1;
-		int west = x == 0 ? col - 1 : x - 1;
-		int east = x == col - 1 ? 0 : col + 1;
+		int north = col == 0 ? rows - 1 : row - 1;
+		int south = col == rows - 1 ? 0 : row + 1;
+		int west = col == 0 ? cols - 1 : col - 1;
+		int east = col == cols - 1 ? 0 : col + 1;
 
 		count += cells[north][west];
-		count += cells[north][x];
+		count += cells[north][col];
 		count += cells[north][east];
-		count += cells[y][west];
-		count += cells[y][east];
+		count += cells[row][west];
+		count += cells[row][east];
 		count += cells[south][west];
-		count += cells[south][x];
+		count += cells[south][col];
 		count += cells[south][east];
 
 		return count;
@@ -40,11 +39,11 @@ private:
 
 public:
 	Universe() {
-		row = 16;
-		col = 16;
+		rows = 32;
+		cols = 32;
 
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < col; j++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				is_ok(i + j) ?
 					cells[i][j] = ALIVE :
 					cells[i][j] = DEAD;
@@ -53,8 +52,8 @@ public:
 	}
 
 	void tick() {
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < col; j++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				int count = neighbour_count(i, j);
 				
 				if (cells[i][j] == ALIVE && count < 2)
@@ -70,10 +69,10 @@ public:
 	}
 
 	void render() {
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < col; j++)
-				cells[i][j] ? printf("+") : printf("-");
-			printf("\n");
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++)
+				cells[i][j] ? std::cout << "5" : std::cout << " ";
+			std::cout << std::endl;
 		}
 	}
 };
