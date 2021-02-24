@@ -12,7 +12,7 @@ class Universe {
 private:
 	int rows;
 	int cols;
-	int cells[32][32];
+	char cells[32][32];
 	bool is_ok(int n) {
 		return n % 2 == 0 || n % 7 == 0;
 	}
@@ -71,7 +71,7 @@ public:
 	void render() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++)
-				cells[i][j] ? std::cout << "5" : std::cout << " ";
+				cells[i][j] ? std::cout << (char)254u : std::cout << ' ';
 			std::cout << std::endl;
 		}
 	}
