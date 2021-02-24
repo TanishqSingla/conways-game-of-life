@@ -18,10 +18,30 @@ private:
 		return n % 2 == 0 || n % 7 == 0;
 	}
 
+	int neighbour_count(int y, int x) {
+		int count = 0;
+
+		int north = y == 0 ? row - 1 : y - 1;
+		int south = y == row - 1 ? 0 : y + 1;
+		int west = x == 0 ? col - 1 : x - 1;
+		int east = x == col - 1 ? 0 : col + 1;
+
+		count += cells[north][west];
+		count += cells[north][x];
+		count += cells[north][east];
+		count += cells[y][west];
+		count += cells[y][east];
+		count += cells[south][west];
+		count += cells[south][x];
+		count += cells[south][east];
+
+		return count;
+	}
+
 public:
 	Universe() {
-		row = 32;
-		col = 32;
+		row = 16;
+		col = 16;
 
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
@@ -35,18 +55,7 @@ public:
 	void tick() {
 		for (int i = 0; i < row; i++) {
 			for (int j = 0; j < col; j++) {
-				int count = 0;
-				count += cells[i-1][j-1];
-				count += cells[i][j-1];
-				count += cells[i+1][j-1];
-				count += cells[i-1][j];
-				count += cells[i+1][j];
-				count += cells[i-1][j+1];
-				count += cells[i][j+1];
-				count += cells[i+1][j+1];
-
-				if( (count < 0 || count > 8))
-					count = 0;
+				int count = neighbour_count(i, j);
 				
 				if (cells[i][j] == ALIVE && count < 2)
 					cells[i][j] = DEAD;
